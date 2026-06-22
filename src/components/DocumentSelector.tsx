@@ -1,0 +1,3 @@
+import { documentTemplates } from "@/lib/pdf/templates";
+type Props={selectedIds:string[];onChange:(next:string[])=>void;};
+export function DocumentSelector({selectedIds,onChange}:Props){const toggle=(id:string)=>selectedIds.includes(id)?onChange(selectedIds.filter(item=>item!==id)):onChange([...selectedIds,id]);return <div className="document-list">{documentTemplates.map(template=><label key={template.id} className="document-card"><input type="checkbox" checked={selectedIds.includes(template.id)} onChange={()=>toggle(template.id)}/><span><span className="document-name">{template.name}</span>{template.description&&<span className="document-description">{template.description}</span>}</span></label>)}</div>}
