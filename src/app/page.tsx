@@ -131,7 +131,7 @@ export default function HomePage() {
     try {
       setLoading(true);
       const pdfBytes = await generateFichaPdf(form);
-      const blob = new Blob([pdfBytes.buffer], { type: "application/pdf" });
+      const blob = new Blob([pdfBytes as any], { type: "application/pdf" });
       const safeName = (form.nome || "paciente")
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
