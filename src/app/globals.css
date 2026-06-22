@@ -35,6 +35,7 @@ h1 {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  text-transform: uppercase;
 }
 .field.full { grid-column: 1 / -1; }
 label {
