@@ -69,6 +69,10 @@ export async function generateFichaPdf(data: FichaData): Promise<Uint8Array> {
     const maxChars = Math.max(1, Math.floor(maxWidth / avgCharWidth));
     const text = fitText(field.value || "", maxChars);
 
+    // Convertendo o valor para letras maiúsculas antes de passar pelo fitText e desenhar
+    const upperValue = (field.value || "").toUpperCase();
+    const text = fitText(upperValue, maxChars);
+
     page.drawText(text, {
       x: field.x,
       y: field.y,
