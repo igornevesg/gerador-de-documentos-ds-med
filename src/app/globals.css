@@ -40,6 +40,7 @@ h1 {
 label {
   font-weight: 600;
   font-size: 14px;
+  text-transform: uppercase;
 }
 input {
   width: 100%;
@@ -48,6 +49,7 @@ input {
   padding: 12px 14px;
   font-size: 15px;
   outline: none;
+  text-transform: uppercase;
 }
 input:focus {
   border-color: #2563eb;
