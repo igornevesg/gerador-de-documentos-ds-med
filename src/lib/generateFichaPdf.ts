@@ -67,12 +67,19 @@ export async function generateFichaPdf(data: FichaData): Promise<Uint8Array> {
     const maxWidth = field.maxWidth ?? 200;
     const avgCharWidth = size * 0.52;
     const maxChars = Math.max(1, Math.floor(maxWidth / avgCharWidth));
+    
+    // 1. Pega o valor, transforma tudo em minúsculo e separa por palavras
+    const words = (field.value || "").toLowerCase().split(" ");
+    
+    // 2. Coloca a primeira letra de cada palavra em maiúscula
+    const capitalizedValue = words
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+    
+    // 3. Aplica o ajuste de tamanho do texto
+    const formattedText = fitText(capitalizedValue, maxChars);
 
-    // Convertendo o valor para letras maiúsculas antes de passar pelo fitText e desenhar
-    const upperValue = (field.value || "").toUpperCase();
-    const text = fitText(upperValue, maxChars);
-
-    page.drawText(text, {
+    page.drawText(formattedText, {
       x: field.x,
       y: field.y,
       size,
