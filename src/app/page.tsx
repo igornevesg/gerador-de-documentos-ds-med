@@ -168,12 +168,6 @@ export default function HomePage() {
           />
         </div>
 
-        <p className="small">
-          Regras do importador: <strong>Nome</strong> ← Nome, <strong>CPF</strong> ← CPF, <strong>Data Nasc</strong> ← Data Nasc,
-          <strong> Cargo</strong> ← Cargo, <strong>Empregador</strong> ← Razão Social, <strong>CNPJ</strong> ← CNPJ,
-          <strong> RG</strong> ← RG, <strong>Data do exame</strong> ← Data de Emissão.
-        </p>
-
         {importStatus && <div className="success">{importStatus}</div>}
         {importError && <div className="warning">{importError}</div>}
 
@@ -277,12 +271,7 @@ export default function HomePage() {
           </div>
         </form>
 
-        <div className="note">
-          <strong>Importante:</strong> coloque o PDF da ficha audiológica em{" "}
-          <span className="code">/public/ficha-modelo.pdf</span>. Se algum campo do
-          cabeçalho ficar fora do lugar, ajuste as coordenadas no arquivo{" "}
-          <span className="code">src/lib/generateFichaPdf.ts</span>.
-        </div>
+
 
         {showDebugText && (
           <div className="note" style={{ whiteSpace: "pre-wrap", marginTop: 14 }}>
