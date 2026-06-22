@@ -16,7 +16,7 @@ export const solicitacaoRxTemplate: PdfTemplate = {
     {
       key: "raioXSolicitado",
       x: 75,
-      y: 365,
+      y: 480,
       size: 10,
       maxWidth: 465,
       multiline: true,
