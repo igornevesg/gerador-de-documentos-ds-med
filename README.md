@@ -31,3 +31,18 @@ Abra `http://localhost:3000`.
 - Campos específicos: `solicitacaoExamesComplementares.ts` e `solicitacaoRx.ts`
 
 Regra: aumentar `x` move para direita; aumentar `y` move para cima.
+
+## Solicitação de Raio-X: clínica e médico solicitante
+
+Quando a Solicitação de RX for selecionada, o formulário apresenta o nome e o CRM
+do médico solicitante (sugeridos a partir da assinatura do examinador na primeira
+página do ASO, quando identificados), e a escolha entre Clínica Ressonar e Clínica Imed.
+Essas informações são impressas no próprio modelo da Solicitação de RX.
+
+- **Clínica Ressonar** — Av. Nossa Senhora de Fátima 847 - Maracanã
+- **Clínica Imed** — Av. Coronel Prates 361 - Centro
+
+Antes de gerar RX, confirme nome e CRM do solicitante, pois o médico que assina o ASO
+pode não ser o mesmo que solicita o exame. O preenchimento é sempre editável.
+
+Os demais documentos permanecem com os mesmos layouts e coordenadas.

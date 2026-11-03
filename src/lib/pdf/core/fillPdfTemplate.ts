@@ -51,6 +51,17 @@ export async function fillPdfTemplate(
     });
   }
 
+  const clinicas = {
+    ressonar: { nome: "Clínica Ressonar", endereco: "Av. Nossa Senhora de Fátima 847 - Maracanã" },
+    imed: { nome: "Clínica Imed", endereco: "Av. Coronel Prates 361 - Centro" },
+  } as const;
+  const clinica = data.clinicaRx ? clinicas[data.clinicaRx] : undefined;
+  const valoresPdf: Record<string, string> = {
+    ...data,
+    clinicaRxNome: clinica?.nome ?? "",
+    clinicaRxEndereco: clinica?.endereco ?? "",
+  };
+
   for (const field of template.fields) {
     if (field.key === "nome") continue;
 
@@ -58,12 +69,12 @@ export async function fillPdfTemplate(
     if (!page) continue;
 
     let rawValue = field.multiline
-      ? String(data[field.key] ?? "")
+      ? String(valoresPdf[field.key] ?? "")
           .replace(/\r/g, "\n")
           .replace(/[ \t]+/g, " ")
           .replace(/\n{2,}/g, "\n")
           .trim()
-      : String(data[field.key] ?? "")
+      : String(valoresPdf[field.key] ?? "")
           .replace(/\s+/g, " ")
           .trim();
 
@@ -72,6 +83,7 @@ export async function fillPdfTemplate(
       "empregador",
       "examesComplementares",
       "raioXSolicitado",
+      "medicoSolicitanteNome",
     ];
 
     if (titleCaseFields.includes(field.key)) {

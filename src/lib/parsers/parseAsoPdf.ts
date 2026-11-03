@@ -110,6 +110,50 @@ function buildPdfWorkerUrl() {
   ).toString();
 }
 
+/**
+ * Prioriza o médico examinador que assina a primeira via do ASO. O campo
+ * "MÉDICO RESPONSÁVEL PELO PCMSO" identifica um papel diferente e não deve
+ * ser confundido com o profissional solicitante.
+ *
+ * Assinaturas costumam estar no final da primeira página, como:
+ * DR LEANDRO DUARTE LOMES
+ * CRM-MG 112128
+ */
+function extractMedicoExaminador(lines: string[]) {
+  const crmPattern = /\bCRM\s*[-–:]?\s*([A-Z]{2})\s*[-–:]?\s*(\d[\d.]*)\b/i;
+  const nomePattern = /\b(?:DR\.?|DRA\.?)\s+([A-ZÀ-Ü][A-ZÀ-Ü\s.'-]{3,})/i;
+  const candidates: { nome: string; crm: string; index: number }[] = [];
+
+  for (let i = 0; i < lines.length; i++) {
+    const crmMatch = lines[i].match(crmPattern);
+    if (!crmMatch) continue;
+
+    const start = Math.max(0, i - 2);
+    const nearby = lines.slice(start, i + 1);
+    for (let j = nearby.length - 1; j >= 0; j--) {
+      const nameMatch = nearby[j].match(nomePattern);
+      if (!nameMatch) continue;
+      const nome = cleanValue(nameMatch[0].replace(/\s*CRM.*$/i, ""));
+      const crm = `CRM-${crmMatch[1].toUpperCase()} ${crmMatch[2]}`;
+      if (!/RESPONS[AÁ]VEL|PCMSO/i.test(nome)) {
+        candidates.push({ nome, crm, index: i });
+      }
+      break;
+    }
+  }
+  // O médico que assina deve estar depois da identificação do responsável
+  // pelo PCMSO. Se não houver assinatura identificável, deixe para preencher
+  // manualmente em vez de usar, por engano, o responsável técnico.
+  const pcmsoIndex = lines.findIndex((line) =>
+    /M[EÉ]DICO\s+RESPONS[AÁ]VEL\s+PELO\s+PCMSO/i.test(line)
+  );
+  const signers = pcmsoIndex >= 0
+    ? candidates.filter((candidate) => candidate.index > pcmsoIndex + 3)
+    : candidates;
+  const last = signers[signers.length - 1];
+  return { nome: last?.nome ?? "", crm: last?.crm ?? "" };
+}
+
 export async function extractAsoDataFromPdf(
   file: File
 ): Promise<ExtractedData> {
@@ -219,8 +263,12 @@ export async function extractAsoDataFromPdf(
       extractFirstDate(examesProcedimentosRaw)
   );
 
+  const medicoExaminador = extractMedicoExaminador(lines);
+
   return {
     nome,
+    medicoSolicitanteNome: medicoExaminador.nome,
+    medicoSolicitanteCrm: medicoExaminador.crm,
     cpf,
     dataNasc,
     cargo,
