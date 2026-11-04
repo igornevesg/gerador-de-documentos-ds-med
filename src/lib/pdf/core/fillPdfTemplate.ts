@@ -118,8 +118,13 @@ export async function fillPdfTemplate(
       continue;
     }
 
-    page.drawText(fitTextToWidth(rawValue, size, maxWidth), {
-      x: field.x,
+    const text = fitTextToWidth(rawValue, size, maxWidth);
+    const x = field.align === "center"
+      ? field.x + (maxWidth - font.widthOfTextAtSize(text, size)) / 2
+      : field.x;
+
+    page.drawText(text, {
+      x,
       y: field.y,
       size,
       font,

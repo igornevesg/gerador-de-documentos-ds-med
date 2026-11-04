@@ -15,8 +15,9 @@ export const solicitacaoRxTemplate: PdfTemplate = {
     // Preenchimento do cabeçalho próprio do formulário RX.
     { key: "clinicaRxNome", x: 99, y: 690, size: 11, maxWidth: 415 },
     { key: "clinicaRxEndereco", x: 224, y: 620, size: 10.5, maxWidth: 340 },
-    // Impressos abaixo de "MÉDICO SOLICITANTE" (centro da página).
-    { key: "medicoSolicitanteNome", x: 170, y: 365, size: 11, maxWidth: 330 },
-    { key: "medicoSolicitanteCrm", x: 225, y: 346, size: 10, maxWidth: 210 },
+    // Centro do título MÉDICO SOLICITANTE no PDF base: x = 294 pt.
+    // x indica o início da caixa; align centraliza pela largura real do texto.
+    { key: "medicoSolicitanteNome", x: 129, y: 365, size: 11, maxWidth: 330, align: "center" },
+    { key: "medicoSolicitanteCrm", x: 189, y: 346, size: 10, maxWidth: 210, align: "center" },
   ],
 };
