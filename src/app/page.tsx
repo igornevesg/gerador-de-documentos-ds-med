@@ -16,7 +16,7 @@ if(selectedDocuments.includes("solicitacao-rx")){
   if(!patient.medicoSolicitanteNome.trim() || !patient.medicoSolicitanteCrm.trim()){
     setError("Preencha o nome e o CRM do médico solicitante na Solicitação de RX.");return
   }
-}setLoading(true);setStatus("");setError("");try{const safeName=sanitizeFileName(patient.nome);for(const templateId of selectedDocuments){const template=getTemplateById(templateId);if(!template)continue;const pdfBytes=await fillPdfTemplate(template,patient);const blob = new Blob(
+}setLoading(true);setStatus("");setError("");try{const safeName=sanitizeFileName(patient.nome);for(const templateId of selectedDocuments){const template=getTemplateById(templateId,patient.anamneseAudiologica);if(!template)continue;const pdfBytes=await fillPdfTemplate(template,patient);const blob = new Blob(
 
   [
 

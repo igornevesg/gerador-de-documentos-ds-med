@@ -9,12 +9,23 @@ type Props = {
 export function ConditionalFields({ patient, onChange, selectedDocuments }: Props) {
   const needsExames = selectedDocuments.includes("solicitacao-exames-complementares");
   const needsRx = selectedDocuments.includes("solicitacao-rx");
-  if (!needsExames && !needsRx) return null;
+  const needsAudiologica = selectedDocuments.includes("ficha-audiologica");
+  if (!needsAudiologica && !needsExames && !needsRx) return null;
 
   return (
     <div className="section">
       <h2>Campos adicionais</h2>
       <div className="grid">
+        {needsAudiologica && (
+          <div className="field full">
+            <label htmlFor="anamneseAudiologica">Ficha Audiológica: anamnese</label>
+            <select id="anamneseAudiologica" value={patient.anamneseAudiologica}
+              onChange={(e) => onChange("anamneseAudiologica", e.target.value)}>
+              <option value="sem">Sem Anamnese</option>
+              <option value="com">Com Anamnese</option>
+            </select>
+          </div>
+        )}
         {needsExames && (
           <div className="field full">
             <label htmlFor="examesComplementares">Exames complementares</label>

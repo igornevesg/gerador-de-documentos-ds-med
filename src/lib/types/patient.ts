@@ -1,6 +1,7 @@
 export type ClinicaRx = "ressonar" | "imed" | "";
 
 export type PatientData = {
+  anamneseAudiologica: "sem" | "com";
   nome: string;
   cpf: string;
   dataNasc: string;
@@ -16,6 +17,7 @@ export type PatientData = {
 };
 
 export const initialPatientData: PatientData = {
+  anamneseAudiologica: "sem",
   nome: "",
   cpf: "",
   dataNasc: "",
